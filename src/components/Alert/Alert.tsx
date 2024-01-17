@@ -25,6 +25,7 @@ const Alert = (props: AlertProps) => {
         <div className="alert-message">{message}</div>
         {description && <div className="alert-description">{description}</div>}
       </div>
+      <button className="alert-close-btn">关闭</button>
     </div>
   );
 };
