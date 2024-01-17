@@ -20,6 +20,7 @@ type BaseButtonProps = {
   btnType?: ButtonType;
   children: React.ReactNode;
   href?: string;
+  onClick?: (e: React.MouseEvent<HTMLElement>) => void;
 };
 
 export function Button(props: BaseButtonProps) {
@@ -30,6 +31,7 @@ export function Button(props: BaseButtonProps) {
     btnType = ButtonType.Default,
     children,
     href,
+    onClick,
   } = props;
 
   const classnames = classNames(
@@ -50,7 +52,7 @@ export function Button(props: BaseButtonProps) {
     );
   } else {
     return (
-      <button className={classnames} disabled={disabled}>
+      <button className={classnames} disabled={disabled} onClick={onClick}>
         {children}
       </button>
     );
