@@ -1,0 +1,33 @@
+@mixin alert-style($background, $border) {
+  background-color: $background;
+  border-color: $border;
+}
+
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  display: flex;
+
+  &-message {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+}
+
+.alert-success {
+  @include alert-style(#dff0d8, #b7eb8f);
+}
+
+.alert-info {
+  @include alert-style(#d9edf7, #9acfea);
+}
+
+.alert-warning {
+  @include alert-style(#fcf8e3, #f7eaa2);
+}
+
+.alert-danger {
+  @include alert-style(#f2dede, #f0b3b3);
+}
