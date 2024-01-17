@@ -8,17 +8,20 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <div
-      style={{
-        backgroundColor: "#c1f1f1",
-      }}
-    >
-      <Button disabled>Hello</Button>
+    <div>
+      <Button>Hello</Button>
+      <Button disabled>Disabled Button</Button>
       <Button btnType={ButtonType.Primary} size={ButtonSize.Large}>
-        Hello
+        Large Primary
       </Button>
-      <Button btnType={ButtonType.Link} href="www.baidu.com" disabled>
-        Baidu
+      <Button btnType={ButtonType.Danger} size={ButtonSize.Small}>
+        Small Danger
+      </Button>
+      <Button btnType={ButtonType.Link} href="www">
+        Baidu Link
+      </Button>
+      <Button btnType={ButtonType.Link} href="www" disabled>
+        Disabled Link
       </Button>
     </div>
   </React.StrictMode>
