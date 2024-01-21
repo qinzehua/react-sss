@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./styles/index.scss";
 import { Button, ButtonSize, ButtonType } from "./components/Button/Button";
-import { Alert, AlertType } from "./components/Alert/Alert";
+import { Menu, MenuItem } from "./components/Menu";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -31,16 +31,13 @@ root.render(
         Disabled Link
       </Button>
 
-      <h1>Alert</h1>
+      <h1>Menu</h1>
       <hr />
-      <Alert
-        message="Success Text"
-        description="Detailed description and advice about successful copywriting."
-        type={AlertType.Success}
-      />
-      <Alert message="Info Text" type={AlertType.Info} />
-      <Alert message="Warning  Text" type={AlertType.Warning} />
-      <Alert message="Danger  Text" type={AlertType.Danger} />
+      <Menu defaultIndex={0}>
+        <MenuItem>cool link</MenuItem>
+        <MenuItem disabled>cool link 2</MenuItem>
+        <MenuItem>cool link 3</MenuItem>
+      </Menu>
     </div>
   </React.StrictMode>
 );
