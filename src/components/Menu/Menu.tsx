@@ -1,14 +1,22 @@
 import classNames from "classnames";
 import { PropsWithChildren } from "react";
-type MenuMode = "horizontal" | "vertical";
+import { createContext, useState } from "react";
 
+type SelectedCallback = (selectedIndex: number) => void;
+type MenuMode = "horizontal" | "vertical";
 type MenuProps = {
   defaultIndex?: number;
   mode?: MenuMode;
   style?: React.CSSProperties;
   className?: string;
-  onSelect?: (selectedIndex: number) => void;
+  onSelect?: SelectedCallback;
 };
+type MenuContextProps = {
+  index: number;
+  onSelect?: SelectedCallback;
+};
+
+export const MenuContext = createContext<MenuContextProps>({ index: 0 });
 
 const Menu: React.FunctionComponent<PropsWithChildren<MenuProps>> = (pros) => {
   const {
@@ -19,13 +27,30 @@ const Menu: React.FunctionComponent<PropsWithChildren<MenuProps>> = (pros) => {
     onSelect,
     children,
   } = pros;
+
+  const [currentActive, setActive] = useState(defaultIndex);
+
   const classnames = classNames("menu", className, {
     "menu-vertical": mode === "vertical",
   });
 
+  const handleSelected = (index: number) => {
+    setActive(index);
+    if (onSelect) {
+      onSelect(index);
+    }
+  };
+
+  const passContext: MenuContextProps = {
+    index: currentActive,
+    onSelect: handleSelected,
+  };
+
   return (
     <ul style={style} className={classnames}>
-      {children}
+      <MenuContext.Provider value={passContext}>
+        {children}
+      </MenuContext.Provider>
     </ul>
   );
 };
