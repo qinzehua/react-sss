@@ -16,6 +16,7 @@ export type MenuProps = {
 type MenuContextProps = {
   index: number;
   onSelect?: SelectedCallback;
+  mode?: MenuMode;
 };
 
 export const MenuContext = createContext<MenuContextProps>({ index: 0 });
@@ -47,6 +48,7 @@ const Menu: React.FunctionComponent<PropsWithChildren<MenuProps>> = (pros) => {
   const passContext: MenuContextProps = {
     index: currentActive,
     onSelect: handleSelected,
+    mode,
   };
 
   const renderChildren = () => {

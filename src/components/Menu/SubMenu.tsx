@@ -11,12 +11,17 @@ type SubMenuProps = {
 const SubMenu: React.FC<PropsWithChildren<SubMenuProps>> = (props) => {
   const { index, title, className, children } = props;
   const context = useContext(MenuContext);
+  const [menuOpen, setOpen] = React.useState(false);
 
   const classnames = classNames("menu-item submenu-item", className, {
     "is-active": context.index === index,
   });
 
   const renderChildren = () => {
+    const subMenuClasses = classNames("menu-submenu", {
+      "menu-opened": menuOpen,
+    });
+
     const childrenComponent = React.Children.map(
       children,
       (child, childIndex) => {
@@ -34,12 +39,38 @@ const SubMenu: React.FC<PropsWithChildren<SubMenuProps>> = (props) => {
         }
       }
     );
-    return <ul className="menu-submenu">{childrenComponent}</ul>;
+    return <ul className={subMenuClasses}>{childrenComponent}</ul>;
   };
 
+  const clickHandlers =
+    context.mode === "vertical"
+      ? {
+          onClick: () => setOpen(!menuOpen),
+        }
+      : {};
+
+  let timer: any;
+  const mouseHandler = (e: React.MouseEvent, toggle: boolean) => {
+    e.preventDefault();
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      setOpen(toggle);
+    }, 300);
+  };
+
+  const hoverHandlers =
+    context.mode !== "vertical"
+      ? {
+          onMouseEnter: (e: React.MouseEvent) => mouseHandler(e, true),
+          onMouseLeave: (e: React.MouseEvent) => mouseHandler(e, false),
+        }
+      : {};
+
   return (
-    <li key={index} className={classnames}>
-      <div className="submenu-title">{title}</div>
+    <li key={index} className={classnames} {...hoverHandlers}>
+      <div className="submenu-title" {...clickHandlers}>
+        {title}
+      </div>
       {renderChildren()}
     </li>
   );
