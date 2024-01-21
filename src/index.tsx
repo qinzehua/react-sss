@@ -33,7 +33,7 @@ root.render(
 
       <h1>Menu</h1>
       <hr />
-      <Menu defaultIndex={0}>
+      <Menu defaultIndex={0} mode="vertical">
         <MenuItem index={0}>cool link</MenuItem>
         <MenuItem index={1} disabled>
           cool link 2
