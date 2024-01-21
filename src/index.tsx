@@ -33,10 +33,14 @@ root.render(
 
       <h1>Menu</h1>
       <hr />
-      <Menu defaultIndex={2}>
+      <Menu defaultIndex={"1"} mode="vertical" defaultOpenSubMenus={["2"]}>
         <MenuItem>cool link</MenuItem>
         <MenuItem disabled>cool link 2</MenuItem>
         <SubMenu title="dropdown">
+          <MenuItem>dropdown 1</MenuItem>
+          <MenuItem>dropdown 2</MenuItem>
+        </SubMenu>
+        <SubMenu title="dropdown2">
           <MenuItem>dropdown 1</MenuItem>
           <MenuItem>dropdown 2</MenuItem>
         </SubMenu>

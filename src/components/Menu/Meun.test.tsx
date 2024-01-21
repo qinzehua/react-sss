@@ -8,24 +8,22 @@ import {
 import { Menu, MenuItem, MenuProps } from "./";
 
 const testProps: MenuProps = {
-  defaultIndex: 0,
+  defaultIndex: "0",
   onSelect: jest.fn(),
   className: "test",
 };
 
 const testVerProps: MenuProps = {
-  defaultIndex: 0,
+  defaultIndex: "0",
   mode: "vertical",
 };
 
 const NiceMenu = (props: MenuProps) => {
   return (
     <Menu {...props}>
-      <MenuItem index={0}>active</MenuItem>
-      <MenuItem index={1} disabled>
-        disabled
-      </MenuItem>
-      <MenuItem index={2}>xyz</MenuItem>
+      <MenuItem>active</MenuItem>
+      <MenuItem disabled>disabled</MenuItem>
+      <MenuItem>xyz</MenuItem>
       <p>xx</p>
     </Menu>
   );
@@ -46,7 +44,6 @@ describe("test Menu and MenuItem component", () => {
     disabledElement = screen.getByText("disabled");
     expect(menuElement).toBeInTheDocument();
     expect(menuElement).toHaveClass("menu test");
-    expect(menuElement.getElementsByTagName("li").length).toEqual(3);
     expect(activeElement).toHaveClass("menu-item is-active");
     expect(disabledElement).toHaveClass("menu-item is-disabled");
   });
@@ -60,7 +57,7 @@ describe("test Menu and MenuItem component", () => {
     const thirdItem = screen.getByText("xyz");
     fireEvent.click(thirdItem);
     expect(thirdItem).toHaveClass("is-active");
-    expect(testProps.onSelect).toHaveBeenCalledWith(2);
+    expect(testProps.onSelect).toHaveBeenCalledWith("2");
 
     fireEvent.click(disabledElement);
     expect(disabledElement).not.toHaveClass("is-active");

@@ -4,26 +4,29 @@ import { PropsWithChildren } from "react";
 import { createContext, useState } from "react";
 import { MenuItemProps } from "./MenuItem";
 
-type SelectedCallback = (selectedIndex: number) => void;
+type SelectedCallback = (selectedIndex: string) => void;
 type MenuMode = "horizontal" | "vertical";
 export type MenuProps = {
-  defaultIndex?: number;
+  defaultIndex?: string;
   mode?: MenuMode;
   style?: React.CSSProperties;
   className?: string;
   onSelect?: SelectedCallback;
+  defaultOpenSubMenus?: string[];
 };
 type MenuContextProps = {
-  index: number;
+  index: string;
   onSelect?: SelectedCallback;
   mode?: MenuMode;
+  defaultOpenSubMenus?: string[];
 };
 
-export const MenuContext = createContext<MenuContextProps>({ index: 0 });
+export const MenuContext = createContext<MenuContextProps>({ index: "0" });
 
 const Menu: React.FunctionComponent<PropsWithChildren<MenuProps>> = (pros) => {
   const {
-    defaultIndex = 0,
+    defaultIndex = "0",
+    defaultOpenSubMenus,
     mode = "horizontal",
     style,
     className,
@@ -38,7 +41,7 @@ const Menu: React.FunctionComponent<PropsWithChildren<MenuProps>> = (pros) => {
     "menu-horizontal": mode !== "vertical",
   });
 
-  const handleSelected = (index: number) => {
+  const handleSelected = (index: string) => {
     setActive(index);
     if (onSelect) {
       onSelect(index);
@@ -49,6 +52,7 @@ const Menu: React.FunctionComponent<PropsWithChildren<MenuProps>> = (pros) => {
     index: currentActive,
     onSelect: handleSelected,
     mode,
+    defaultOpenSubMenus,
   };
 
   const renderChildren = () => {
@@ -58,7 +62,7 @@ const Menu: React.FunctionComponent<PropsWithChildren<MenuProps>> = (pros) => {
       const { displayName } = childElement.type;
       if (displayName === "MenuItem" || displayName === "SubMenu") {
         return React.cloneElement(childElement, {
-          index,
+          index: index.toString(),
         });
       } else {
         console.warn(

@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { MenuContext } from "./Menu";
 
 type SubMenuProps = {
-  index?: number;
+  index?: string;
   title: string;
   className?: string;
 };
@@ -11,10 +11,13 @@ type SubMenuProps = {
 const SubMenu: React.FC<PropsWithChildren<SubMenuProps>> = (props) => {
   const { index, title, className, children } = props;
   const context = useContext(MenuContext);
-  const [menuOpen, setOpen] = React.useState(false);
+  const isOpen =
+    context.defaultOpenSubMenus?.includes(index as string) &&
+    context.mode === "vertical";
+  const [menuOpen, setOpen] = React.useState(isOpen);
 
   const classnames = classNames("menu-item submenu-item", className, {
-    "is-active": context.index === index,
+    "is-active": context.index.split("-")[0] === index,
   });
 
   const renderChildren = () => {
@@ -30,7 +33,7 @@ const SubMenu: React.FC<PropsWithChildren<SubMenuProps>> = (props) => {
         const { displayName } = childElement.type;
         if (displayName === "MenuItem") {
           return React.cloneElement(childElement, {
-            index: childIndex,
+            index: `${index}-${childIndex}`,
           });
         } else {
           console.error(
