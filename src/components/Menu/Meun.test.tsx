@@ -26,6 +26,7 @@ const NiceMenu = (props: MenuProps) => {
         disabled
       </MenuItem>
       <MenuItem index={2}>xyz</MenuItem>
+      <p>xx</p>
     </Menu>
   );
 };

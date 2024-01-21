@@ -2,7 +2,7 @@ import { PropsWithChildren, useContext } from "react";
 import classNames from "classnames";
 import { MenuContext } from "./Menu";
 
-type MenuItemProps = {
+export type MenuItemProps = {
   index: number;
   disabled?: boolean;
   className?: string;
@@ -30,5 +30,7 @@ const MenuItem: React.FC<PropsWithChildren<MenuItemProps>> = (props) => {
     </li>
   );
 };
+
+MenuItem.displayName = "MenuItem";
 
 export { MenuItem };

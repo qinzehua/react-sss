@@ -23,9 +23,17 @@
 
 - MeunItem, 引入 context
 - MenuItem, const context = ......
-- class, 设置is-actived
-- onClick, handleClick, 调用context.OnSelect(index) && !disabled
-
+- class, 设置 is-actived
+- onClick, handleClick, 调用 context.OnSelect(index) && !disabled
 
 第四部分
-- 
+
+- 测试
+
+第五部分
+
+- map children
+  - 断言 child 类型
+  - 获取 displayName
+  - 不是 MenuItem 就抛出 warning
+  - cloneElement 混入 index
