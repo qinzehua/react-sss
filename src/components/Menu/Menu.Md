@@ -27,13 +27,16 @@
 - onClick, handleClick, 调用 context.OnSelect(index) && !disabled
 
 第四部分
-
 - 测试
 
 第五部分
-
 - map children
   - 断言 child 类型
   - 获取 displayName
   - 不是 MenuItem 就抛出 warning
   - cloneElement 混入 index
+
+第六部分
+- 创建SubMenu, props, index, title, className
+- 拼接class, menu-item submen-item is-active
+- renderChildren, 判断child 只能时MenuItem, ul > chidlrends

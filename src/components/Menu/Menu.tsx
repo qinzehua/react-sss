@@ -34,6 +34,7 @@ const Menu: React.FunctionComponent<PropsWithChildren<MenuProps>> = (pros) => {
 
   const classnames = classNames("menu", className, {
     "menu-vertical": mode === "vertical",
+    "menu-horizontal": mode !== "vertical",
   });
 
   const handleSelected = (index: number) => {
@@ -52,8 +53,8 @@ const Menu: React.FunctionComponent<PropsWithChildren<MenuProps>> = (pros) => {
     return React.Children.map(children, (child, index) => {
       const childElement =
         child as React.FunctionComponentElement<MenuItemProps>;
-
-      if (childElement.type.displayName === "MenuItem") {
+      const { displayName } = childElement.type;
+      if (displayName === "MenuItem" || displayName === "SubMenu") {
         return React.cloneElement(childElement, {
           index,
         });

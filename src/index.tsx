@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./styles/index.scss";
 import { Button, ButtonSize, ButtonType } from "./components/Button/Button";
-import { Menu, MenuItem } from "./components/Menu";
+import { Menu, MenuItem, SubMenu } from "./components/Menu";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -33,12 +33,14 @@ root.render(
 
       <h1>Menu</h1>
       <hr />
-      <Menu defaultIndex={0} mode="vertical">
-        <MenuItem index={0}>cool link</MenuItem>
-        <MenuItem index={1} disabled>
-          cool link 2
-        </MenuItem>
-        <MenuItem index={2}>cool link 3</MenuItem>
+      <Menu defaultIndex={2}>
+        <MenuItem>cool link</MenuItem>
+        <MenuItem disabled>cool link 2</MenuItem>
+        <SubMenu title="dropdown">
+          <MenuItem>dropdown 1</MenuItem>
+          <MenuItem>dropdown 2</MenuItem>
+        </SubMenu>
+        <MenuItem>cool link 3</MenuItem>
       </Menu>
     </div>
   </React.StrictMode>
