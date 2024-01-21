@@ -4,7 +4,7 @@ import { createContext, useState } from "react";
 
 type SelectedCallback = (selectedIndex: number) => void;
 type MenuMode = "horizontal" | "vertical";
-type MenuProps = {
+export type MenuProps = {
   defaultIndex?: number;
   mode?: MenuMode;
   style?: React.CSSProperties;
@@ -47,7 +47,7 @@ const Menu: React.FunctionComponent<PropsWithChildren<MenuProps>> = (pros) => {
   };
 
   return (
-    <ul style={style} className={classnames}>
+    <ul style={style} className={classnames} data-testid="test-menu">
       <MenuContext.Provider value={passContext}>
         {children}
       </MenuContext.Provider>
