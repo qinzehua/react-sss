@@ -25,12 +25,25 @@
       border-bottom: $menu-item-active-border-width solid
         $menu-item-active-color;
     }
+    .submenu-title {
+      display: flex;
+      align-items: center;
+    }
+    .arrow-icon {
+      margin-left: 3px;
+      transition: transform 0.3s ease-in-out;
+    }
+    &:hover {
+      .arrow-icon {
+        transform: rotate(180deg);
+      }
+    }
   }
+
   .submenu-item {
     position: relative;
   }
   &-submenu {
-    display: none;
     list-style: none;
     padding-left: 0;
     white-space: nowrap;
@@ -44,16 +57,6 @@
         color: $menu-item-active-color !important;
       }
     }
-  }
-  &-submenu.menu-opened {
-    display: block;
-  }
-  .submenu-title {
-    display: flex;
-    align-items: center;
-  }
-  .arrow-icon {
-    margin-left: 3px;
   }
 }
 .menu-horizontal {
