@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./styles/index.scss";
 import { Button, ButtonSize, ButtonType } from "./components/Button/Button";
 import { Menu, MenuItem, SubMenu } from "./components/Menu";
+import { Icon } from "./components/Icon";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -14,6 +15,9 @@ root.render(
         padding: 25,
       }}
     >
+      <h1>Icon</h1>
+      <hr />
+      <Icon icon="coffee" theme="primary" size={"10x"} />
       <h1>Button</h1>
       <hr />
       <Button>Hello</Button>
@@ -33,7 +37,7 @@ root.render(
 
       <h1>Menu</h1>
       <hr />
-      <Menu defaultIndex={"1"} mode="vertical" defaultOpenSubMenus={["2"]}>
+      <Menu defaultIndex={"1"} defaultOpenSubMenus={["2"]}>
         <MenuItem>cool link</MenuItem>
         <MenuItem disabled>cool link 2</MenuItem>
         <SubMenu title="dropdown">

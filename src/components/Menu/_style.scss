@@ -48,6 +48,13 @@
   &-submenu.menu-opened {
     display: block;
   }
+  .submenu-title {
+    display: flex;
+    align-items: center;
+  }
+  .arrow-icon {
+    margin-left: 3px;
+  }
 }
 .menu-horizontal {
   > .menu-item {

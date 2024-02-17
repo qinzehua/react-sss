@@ -1,6 +1,7 @@
 import React, { PropsWithChildren, useContext } from "react";
 import classNames from "classnames";
 import { MenuContext } from "./Menu";
+import { Icon } from "../Icon";
 
 type SubMenuProps = {
   index?: string;
@@ -73,6 +74,7 @@ const SubMenu: React.FC<PropsWithChildren<SubMenuProps>> = (props) => {
     <li key={index} className={classnames} {...hoverHandlers}>
       <div className="submenu-title" {...clickHandlers}>
         {title}
+        <Icon icon="angle-down" className="arrow-icon" />
       </div>
       {renderChildren()}
     </li>
