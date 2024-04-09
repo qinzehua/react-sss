@@ -16,8 +16,8 @@ export enum ButtonType {
 type BaseButtonProps = {
   className?: string;
   disabled?: boolean;
-  size?: ButtonSize;
-  btnType?: ButtonType;
+  size?: "lg" | "sm";
+  btnType?: "primary" | "default" | "danger" | "link";
   children: React.ReactNode;
   href?: string;
   onClick?: (e: React.MouseEvent<HTMLElement>) => void;
