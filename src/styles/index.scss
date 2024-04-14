@@ -1,9 +1,10 @@
-@import "variables";
-@import "reboot";
-@import "mixin";
-@import "animation";
+@import 'variables';
+@import 'reboot';
+@import 'mixin';
+@import 'animation';
 
-@import "../components/Button/style";
-@import "../components/Alert/style";
-@import "../components/Menu/style";
-@import "../components/Icon/style";
+@import '../components/Button/style';
+@import '../components/Alert/style';
+@import '../components/Menu/style';
+@import '../components/Icon/style';
+@import '../components/Input/style';
