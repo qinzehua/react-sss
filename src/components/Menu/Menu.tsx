@@ -6,6 +6,7 @@ import { MenuItemProps } from "./MenuItem";
 
 type SelectedCallback = (selectedIndex: string) => void;
 type MenuMode = "horizontal" | "vertical";
+
 export type MenuProps = {
   defaultIndex?: string;
   mode?: MenuMode;
@@ -14,6 +15,7 @@ export type MenuProps = {
   onSelect?: SelectedCallback;
   defaultOpenSubMenus?: string[];
 };
+
 type MenuContextProps = {
   index: string;
   onSelect?: SelectedCallback;
