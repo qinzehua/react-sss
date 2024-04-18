@@ -1,32 +1,43 @@
 import { FC, useState } from 'react'
 import { Input, InputProps } from '../Input'
 
-export interface AutoCompleteProps extends Omit<InputProps, 'onSelect'> {
-  fetchSuggestions: (keyword: string) => string[]
-  onSelect?: (item: string) => void
+export type BaseItem = {
+  value: string
 }
 
-export const AutoComplete: FC<AutoCompleteProps> = (props) => {
-  const { fetchSuggestions, onSelect, value, ...restProps } = props
+export type DataSourceType<T = {}> = T & BaseItem
+
+export interface AutoCompleteProps<T> extends Omit<InputProps, 'onSelect'> {
+  fetchSuggestions: (keyword: string) => DataSourceType<T>[]
+  onSelect?: (item: DataSourceType<T>) => void
+  renderOption?: (item: DataSourceType<T>) => React.ReactNode
+}
+
+export function AutoComplete<T>(props: AutoCompleteProps<T>) {
+  const { fetchSuggestions, onSelect, value, renderOption, ...restProps } =
+    props
   const [inputValue, setInputValue] = useState(value)
-  const [suggestions, setSuggestions] = useState<string[]>([])
+  const [suggestions, setSuggestions] = useState<DataSourceType<T>[]>([])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.trim()
     setInputValue(value)
     if (value) {
       const results = fetchSuggestions(value)
-      console.log('results: ', results)
       setSuggestions(results)
     } else {
       setSuggestions([])
     }
   }
 
-  const handleSelect = (item: string) => {
-    setInputValue(item)
+  const handleSelect = (item: DataSourceType<T>) => {
+    setInputValue(item.value)
     setSuggestions([])
     onSelect?.(item)
+  }
+
+  const renderTemplate = (item: DataSourceType<T>) => {
+    return renderOption ? renderOption(item) : item.value
   }
 
   const generateDropdown = () => {
@@ -35,7 +46,7 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
         {suggestions.map((item, index) => {
           return (
             <li key={index} onClick={() => handleSelect(item)}>
-              {item}
+              {renderTemplate(item)}
             </li>
           )
         })}
@@ -46,7 +57,6 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
   return (
     <div>
       <Input value={inputValue} onChange={handleChange} {...restProps} />
-
       {suggestions.length > 0 && generateDropdown()}
     </div>
   )
