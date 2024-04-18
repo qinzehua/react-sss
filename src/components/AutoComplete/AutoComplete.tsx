@@ -1,6 +1,7 @@
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { Input, InputProps } from '../Input'
 import { Icon } from '../Icon'
+import { useDebounce } from '../../hooks/useDebounce'
 
 export type BaseItem = {
   value: string
@@ -23,22 +24,30 @@ export function AutoComplete<T>(props: AutoCompleteProps<T>) {
   const [suggestions, setSuggestions] = useState<DataSourceType<T>[]>([])
   const [loading, setLoading] = useState(false)
 
+  const debounceValue = useDebounce(inputValue)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (debounceValue) {
+        const results = fetchSuggestions(debounceValue)
+        if (results instanceof Promise) {
+          setLoading(true)
+          const data = await results
+          setSuggestions(data)
+          setLoading(false)
+        } else {
+          setSuggestions(results)
+        }
+      } else {
+        setSuggestions([])
+      }
+    }
+    fetchData()
+  }, [debounceValue, fetchSuggestions])
+
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.trim()
     setInputValue(value)
-    if (value) {
-      const results = fetchSuggestions(value)
-      if (results instanceof Promise) {
-        setLoading(true)
-        const data = await results
-        setSuggestions(data)
-        setLoading(false)
-      } else {
-        setSuggestions(results)
-      }
-    } else {
-      setSuggestions([])
-    }
   }
 
   const handleSelect = (item: DataSourceType<T>) => {
