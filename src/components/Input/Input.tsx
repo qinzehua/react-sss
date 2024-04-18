@@ -1,4 +1,9 @@
-import React, { ChangeEvent, InputHTMLAttributes } from 'react'
+import React, {
+  ChangeEvent,
+  InputHTMLAttributes,
+  forwardRef,
+  useRef,
+} from 'react'
 import { IconProp } from '@fortawesome/fontawesome-svg-core'
 import classNames from 'classnames'
 import { Icon } from '../Icon'
@@ -13,7 +18,7 @@ export interface InputProps
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
-export const Input = (props: InputProps) => {
+export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const { disabled, size, icon, append, prepend, className, style, ...rest } =
     props
 
@@ -32,8 +37,8 @@ export const Input = (props: InputProps) => {
           <Icon icon={icon} />
         </div>
       )}
-      <input className="input-inner" disabled={disabled} {...rest} />
+      <input ref={ref} className="input-inner" disabled={disabled} {...rest} />
       {append && <div className="in-input-group-append">{append}</div>}
     </div>
   )
-}
+})

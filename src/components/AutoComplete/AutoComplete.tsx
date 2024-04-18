@@ -1,4 +1,5 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
+import classNames from 'classnames'
 import { Input, InputProps } from '../Input'
 import { Icon } from '../Icon'
 import { useDebounce } from '../../hooks/useDebounce'
@@ -23,6 +24,8 @@ export function AutoComplete<T>(props: AutoCompleteProps<T>) {
   const [inputValue, setInputValue] = useState(value)
   const [suggestions, setSuggestions] = useState<DataSourceType<T>[]>([])
   const [loading, setLoading] = useState(false)
+  const [highlightIndex, setHighlightIndex] = useState(-1)
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const debounceValue = useDebounce(inputValue)
 
@@ -45,6 +48,30 @@ export function AutoComplete<T>(props: AutoCompleteProps<T>) {
     fetchData()
   }, [debounceValue, fetchSuggestions])
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    switch (e.key) {
+      case 'Enter':
+        if (suggestions.length > 0) {
+          handleSelect(suggestions[highlightIndex])
+        }
+        break
+      case 'Escape':
+        setSuggestions([])
+        setHighlightIndex(-1)
+        break
+      case 'ArrowDown':
+        setHighlightIndex((prev) => (prev + 1) % suggestions.length)
+        break
+      case 'ArrowUp':
+        setHighlightIndex((prev) =>
+          prev <= 0 ? suggestions.length - 1 : prev - 1
+        )
+        break
+      default:
+        break
+    }
+  }
+
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.trim()
     setInputValue(value)
@@ -54,6 +81,7 @@ export function AutoComplete<T>(props: AutoCompleteProps<T>) {
     setInputValue(item.value)
     setSuggestions([])
     onSelect?.(item)
+    inputRef.current?.blur()
   }
 
   const renderTemplate = (item: DataSourceType<T>) => {
@@ -64,8 +92,15 @@ export function AutoComplete<T>(props: AutoCompleteProps<T>) {
     return (
       <ul>
         {suggestions.map((item, index) => {
+          const classes = classNames('suggestion_item', {
+            suggestion_item_selected: index === highlightIndex,
+          })
           return (
-            <li key={index} onClick={() => handleSelect(item)}>
+            <li
+              className={classes}
+              key={index}
+              onClick={() => handleSelect(item)}
+            >
               {renderTemplate(item)}
             </li>
           )
@@ -76,7 +111,13 @@ export function AutoComplete<T>(props: AutoCompleteProps<T>) {
 
   return (
     <div>
-      <Input value={inputValue} onChange={handleChange} {...restProps} />
+      <Input
+        value={inputValue}
+        onKeyDown={handleKeyDown}
+        onChange={handleChange}
+        ref={inputRef}
+        {...restProps}
+      />
       {loading && (
         <ul>
           <Icon icon="spinner" spin />
