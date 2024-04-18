@@ -19,14 +19,17 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default = () => {
-  const lakerWithNumber: LakerType[] = [
-    { value: 'bradley', number: 11 },
-    { value: 'pope', number: 1 },
-    { value: 'caruso', number: 4 },
-    { value: 'cook', number: 2 },
-  ]
   const fetchSuggestions = (keyword: string) => {
-    return lakerWithNumber.filter((item) => item.value.includes(keyword))
+    return fetch('https://api.github.com/search/users?q=' + keyword)
+      .then((res) => res.json())
+      .then(({ items }) => {
+        if (!items) return []
+
+        return items.slice(0, 10).map((item: any) => ({
+          value: item.login,
+          ...item,
+        }))
+      })
   }
 
   const renderOption = (item: LakerType) => {
