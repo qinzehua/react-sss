@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import { Input, InputProps } from '../Input'
 import { Icon } from '../Icon'
 import { useDebounce } from '../../hooks/useDebounce'
+import { useClickOutside } from '../../hooks/useClickOutside'
 
 export type BaseItem = {
   value: string
@@ -25,13 +26,14 @@ export function AutoComplete<T>(props: AutoCompleteProps<T>) {
   const [suggestions, setSuggestions] = useState<DataSourceType<T>[]>([])
   const [loading, setLoading] = useState(false)
   const [highlightIndex, setHighlightIndex] = useState(-1)
-  const inputRef = useRef<HTMLInputElement>(null)
+  const inputRef = useRef(false)
+  const divRef = useRef<HTMLDivElement>(null)
 
   const debounceValue = useDebounce(inputValue)
 
   useEffect(() => {
     const fetchData = async () => {
-      if (debounceValue) {
+      if (debounceValue && inputRef.current) {
         const results = fetchSuggestions(debounceValue)
         if (results instanceof Promise) {
           setLoading(true)
@@ -47,6 +49,11 @@ export function AutoComplete<T>(props: AutoCompleteProps<T>) {
     }
     fetchData()
   }, [debounceValue, fetchSuggestions])
+
+  useClickOutside(divRef, () => {
+    setSuggestions([])
+    setHighlightIndex(-1)
+  })
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     switch (e.key) {
@@ -75,13 +82,14 @@ export function AutoComplete<T>(props: AutoCompleteProps<T>) {
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.trim()
     setInputValue(value)
+    inputRef.current = true
   }
 
   const handleSelect = (item: DataSourceType<T>) => {
     setInputValue(item.value)
     setSuggestions([])
     onSelect?.(item)
-    inputRef.current?.blur()
+    inputRef.current = false
   }
 
   const renderTemplate = (item: DataSourceType<T>) => {
@@ -110,12 +118,11 @@ export function AutoComplete<T>(props: AutoCompleteProps<T>) {
   }
 
   return (
-    <div>
+    <div ref={divRef}>
       <Input
         value={inputValue}
         onKeyDown={handleKeyDown}
         onChange={handleChange}
-        ref={inputRef}
         {...restProps}
       />
       {loading && (
