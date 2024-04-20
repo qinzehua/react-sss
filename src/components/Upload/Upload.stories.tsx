@@ -67,6 +67,14 @@ export const Default = () => {
       onError={(err, file) => {
         console.log('err: ', err)
       }}
+      onRemove={(file) => {
+        console.log('remove file: ', file)
+      }}
+      name="qzh_file"
+      data={{ kkkkk: 'value' }}
+      headers={{ 'X-Powered-By': 'qzh' }}
+      accept=".rar"
+      multiple
     />
   )
 }

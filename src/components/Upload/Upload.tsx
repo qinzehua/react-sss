@@ -22,6 +22,12 @@ type UploadProps = {
   onSuccess?: (data: any, file: File) => void
   onError?: (err: any, file: File) => void
   onRemove?: (file: FileUpload) => void
+  headers?: { [key: string]: any }
+  name?: string
+  data?: { [key: string]: any }
+  withCredentials?: boolean
+  accept?: string
+  multiple?: boolean
 }
 
 export const Upload = (props: UploadProps) => {
@@ -34,6 +40,12 @@ export const Upload = (props: UploadProps) => {
     onSuccess,
     onError,
     onRemove,
+    headers,
+    name,
+    data,
+    withCredentials,
+    accept,
+    multiple,
   } = props
 
   const [fileList, setFileList] = useState<FileUpload[]>(defaultFileList ?? [])
@@ -65,8 +77,9 @@ export const Upload = (props: UploadProps) => {
   }
 
   const post = (file: File) => {
+    const filename = name || file.name
     const _file: FileUpload = {
-      name: file.name,
+      name: filename,
       size: file.size,
       percentage: 0,
       status: 'ready',
@@ -78,12 +91,19 @@ export const Upload = (props: UploadProps) => {
     })
 
     const formData = new FormData()
-    formData.append(file.name, file)
+    formData.append(filename, file)
+    if (data) {
+      Object.keys(data).forEach((key) => {
+        formData.append(key, data[key])
+      })
+    }
     axios
       .post(action, formData, {
         headers: {
+          ...headers,
           'Content-Type': 'multipart/form-data',
         },
+        withCredentials,
         onUploadProgress: (e) => {
           const percentage = Math.round((e.loaded * 100) / e.total!)
           updateFileList({ ..._file, percentage, status: 'uploading' })
@@ -135,7 +155,14 @@ export const Upload = (props: UploadProps) => {
         <Button onClick={handleClick} btnType="primary" size="lg">
           Upload
         </Button>
-        <input onChange={handleChange} ref={inputRef} type="file" hidden />
+        <input
+          onChange={handleChange}
+          ref={inputRef}
+          type="file"
+          accept={accept}
+          multiple={multiple}
+          hidden
+        />
       </div>
       <UploadList fileList={fileList} onRemove={handleRemove} />
     </div>
