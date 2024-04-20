@@ -1,4 +1,5 @@
 import { Icon } from '../Icon'
+import Progress from '../Progress/Progress'
 import { FileUpload } from './Upload'
 
 type UploadListProps = {
@@ -37,6 +38,9 @@ export const UploadList = (props: UploadListProps) => {
                 }}
               ></Icon>
             </span>
+            {item.status === 'uploading' && (
+              <Progress percent={item.percentage || 0}></Progress>
+            )}
           </li>
         )
       })}

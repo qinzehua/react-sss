@@ -21,6 +21,7 @@ type UploadProps = {
   onProgress?: (percentage: number, file: File) => void
   onSuccess?: (data: any, file: File) => void
   onError?: (err: any, file: File) => void
+  onRemove?: (file: FileUpload) => void
 }
 
 export const Upload = (props: UploadProps) => {
@@ -32,6 +33,7 @@ export const Upload = (props: UploadProps) => {
     onProgress,
     onSuccess,
     onError,
+    onRemove,
   } = props
 
   const [fileList, setFileList] = useState<FileUpload[]>(defaultFileList ?? [])
@@ -120,7 +122,12 @@ export const Upload = (props: UploadProps) => {
     }
   }
 
-  const handleRemove = (file: FileUpload) => {}
+  const handleRemove = (file: FileUpload) => {
+    setFileList((prevList) => {
+      return prevList.filter((item) => item.uid !== file.uid)
+    })
+    onRemove?.(file)
+  }
 
   return (
     <div className="upload-component">
