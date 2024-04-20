@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { fn } from '@storybook/test'
 import { FileUpload, Upload } from './Upload'
+import { Icon } from '../Icon'
 
 const meta = {
   title: 'Upload',
@@ -76,5 +77,36 @@ export const Default = () => {
       accept=".rar"
       multiple
     />
+  )
+}
+
+export const Dragger = () => {
+  return (
+    <Upload
+      action="http://localhost:3000/upload"
+      beforeUpload={modifyFile}
+      onProgress={(percentage, file) => {
+        console.log('percentage: ', percentage)
+      }}
+      onSuccess={(data, file) => {
+        console.log('data: ', data)
+      }}
+      onError={(err, file) => {
+        console.log('err: ', err)
+      }}
+      onRemove={(file) => {
+        console.log('remove file: ', file)
+      }}
+      name="qzh_file"
+      data={{ kkkkk: 'value' }}
+      headers={{ 'X-Powered-By': 'qzh' }}
+      accept=".rar"
+      multiple
+      drag
+    >
+      <Icon icon="upload" size="5x" theme="secondary"></Icon>
+      <br />
+      <p>Drag file over to upload</p>
+    </Upload>
   )
 }

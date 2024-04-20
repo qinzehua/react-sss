@@ -2,6 +2,7 @@ import axios from 'axios'
 import { Button } from '../Button'
 import { useRef, useState } from 'react'
 import { UploadList } from './UploadList'
+import { Dragger } from './Dragger'
 
 export interface FileUpload {
   name: string
@@ -28,6 +29,8 @@ type UploadProps = {
   withCredentials?: boolean
   accept?: string
   multiple?: boolean
+  drag?: boolean
+  children?: React.ReactNode
 }
 
 export const Upload = (props: UploadProps) => {
@@ -46,6 +49,8 @@ export const Upload = (props: UploadProps) => {
     withCredentials,
     accept,
     multiple,
+    children,
+    drag,
   } = props
 
   const [fileList, setFileList] = useState<FileUpload[]>(defaultFileList ?? [])
@@ -62,6 +67,7 @@ export const Upload = (props: UploadProps) => {
   }
 
   const uploadFiles = (files: FileList) => {
+    console.log('files: ', files)
     Array.from(files).forEach(async (file) => {
       if (!beforeUpload) {
         post(file)
@@ -151,10 +157,12 @@ export const Upload = (props: UploadProps) => {
 
   return (
     <div className="upload-component">
-      <div className="upload-input">
-        <Button onClick={handleClick} btnType="primary" size="lg">
-          Upload
-        </Button>
+      <div className="upload-input" onClick={handleClick}>
+        {drag ? (
+          <Dragger onFile={(files) => uploadFiles(files)}>{children}</Dragger>
+        ) : (
+          children
+        )}
         <input
           onChange={handleChange}
           ref={inputRef}
