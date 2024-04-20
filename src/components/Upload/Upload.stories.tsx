@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { fn } from '@storybook/test'
-import { Upload } from './Upload'
+import { FileUpload, Upload } from './Upload'
 
 const meta = {
   title: 'Upload',
@@ -28,11 +28,36 @@ const modifyFile = async (file: File) => {
   return newFile
 }
 
+const defaultFileList: FileUpload[] = [
+  {
+    uid: '123',
+    size: 1234,
+    name: 'hello.md',
+    status: 'uploading',
+    percentage: 30,
+  },
+  {
+    uid: '122',
+    size: 1234,
+    name: 'xyz.md',
+    status: 'success',
+    percentage: 30,
+  },
+  {
+    uid: '121',
+    size: 1234,
+    name: 'eyiha.md',
+    status: 'error',
+    percentage: 30,
+  },
+]
+
 export const Default = () => {
   return (
     <Upload
       action="http://localhost:3000/upload"
       beforeUpload={modifyFile}
+      defaultFileList={defaultFileList}
       onProgress={(percentage, file) => {
         console.log('percentage: ', percentage)
       }}

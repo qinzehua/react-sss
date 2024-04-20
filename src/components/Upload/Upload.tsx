@@ -1,18 +1,21 @@
 import axios from 'axios'
 import { Button } from '../Button'
 import { useRef, useState } from 'react'
+import { UploadList } from './UploadList'
 
-export interface FileStatus {
+export interface FileUpload {
   name: string
   percentage: number
   status: 'ready' | 'uploading' | 'success' | 'error'
+  size: number
   uid: string
-  raw: File
+  raw?: File
   response?: any
 }
 
 type UploadProps = {
   action: string
+  defaultFileList?: FileUpload[]
   beforeUpload?: (file: File) => Promise<File | boolean>
   onChange?: (files: File) => void
   onProgress?: (percentage: number, file: File) => void
@@ -21,11 +24,17 @@ type UploadProps = {
 }
 
 export const Upload = (props: UploadProps) => {
-  const { action, beforeUpload, onChange, onProgress, onSuccess, onError } =
-    props
+  const {
+    action,
+    defaultFileList,
+    beforeUpload,
+    onChange,
+    onProgress,
+    onSuccess,
+    onError,
+  } = props
 
-  const [fileList, setFileList] = useState<FileStatus[]>([])
-  console.log('fileList: ', fileList)
+  const [fileList, setFileList] = useState<FileUpload[]>(defaultFileList ?? [])
   const inputRef = useRef<HTMLInputElement>(null)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,8 +63,9 @@ export const Upload = (props: UploadProps) => {
   }
 
   const post = (file: File) => {
-    const _file: FileStatus = {
+    const _file: FileUpload = {
       name: file.name,
+      size: file.size,
       percentage: 0,
       status: 'ready',
       uid: Date.now() + '_upload-file',
@@ -93,7 +103,7 @@ export const Upload = (props: UploadProps) => {
       })
   }
 
-  const updateFileList = (updateFile: FileStatus) => {
+  const updateFileList = (updateFile: FileUpload) => {
     setFileList((prevList) => {
       return prevList.map((file) => {
         if (file.uid === updateFile.uid) {
@@ -110,12 +120,17 @@ export const Upload = (props: UploadProps) => {
     }
   }
 
+  const handleRemove = (file: FileUpload) => {}
+
   return (
-    <div>
-      <Button onClick={handleClick} btnType="primary" size="lg">
-        Upload
-      </Button>
-      <input onChange={handleChange} ref={inputRef} type="file" hidden />
+    <div className="upload-component">
+      <div className="upload-input">
+        <Button onClick={handleClick} btnType="primary" size="lg">
+          Upload
+        </Button>
+        <input onChange={handleChange} ref={inputRef} type="file" hidden />
+      </div>
+      <UploadList fileList={fileList} onRemove={handleRemove} />
     </div>
   )
 }
