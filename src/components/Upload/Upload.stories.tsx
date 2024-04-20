@@ -15,10 +15,24 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
+const checkFileSize = async (file: File) => {
+  if (Math.round(file.size / 1024) > 50) {
+    alert('file too big')
+    return false
+  }
+  return true
+}
+
+const modifyFile = async (file: File) => {
+  const newFile = new File([file], 'new_name', { type: file.type })
+  return newFile
+}
+
 export const Default = () => {
   return (
     <Upload
       action="http://localhost:3000/upload"
+      beforeUpload={modifyFile}
       onProgress={(percentage, file) => {
         console.log('percentage: ', percentage)
       }}
