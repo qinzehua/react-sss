@@ -32,7 +32,11 @@ export const Default = () => {
         className="agreement-section"
         style={{ display: 'flex', justifyContent: 'flex-end' }}
       >
-        <FormItem name="agreement">
+        <FormItem
+          name="agreement"
+          valuePropsName="checked"
+          getValueFromEvent={(e) => e.target.checked}
+        >
           <Input type="checkbox" />
         </FormItem>
         <span className="agreement-text">

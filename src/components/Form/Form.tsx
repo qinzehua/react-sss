@@ -1,5 +1,5 @@
 import { ReactNode, createContext } from 'react'
-import { FieldAction, useStore } from './hooks/useStore'
+import { FieldAction, useStore, FieldsStatus } from './hooks/useStore'
 
 type FormProps = {
   children: ReactNode
@@ -8,8 +8,10 @@ type FormProps = {
 
 export const FormContext = createContext<{
   dispatch: React.Dispatch<FieldAction>
+  fields: FieldsStatus
 }>({
   dispatch: () => {},
+  fields: {},
 })
 
 export const Form = (props: FormProps) => {
@@ -18,7 +20,7 @@ export const Form = (props: FormProps) => {
   return (
     <>
       <form className="form" name={name}>
-        <FormContext.Provider value={{ dispatch }}>
+        <FormContext.Provider value={{ dispatch, fields }}>
           {children}
         </FormContext.Provider>
       </form>

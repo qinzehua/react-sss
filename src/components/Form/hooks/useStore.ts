@@ -5,10 +5,10 @@ type FieldDetail = {
   label?: React.ReactNode
   value: any
   rules?: any[]
-  isValidate: boolean
+  isValidate?: boolean
 }
 
-type FieldsStatus = {
+export type FieldsStatus = {
   [key: string]: FieldDetail
 }
 
@@ -17,7 +17,7 @@ type FormStatus = {
 }
 
 export type FieldAction = {
-  type: 'addField'
+  type: 'addField' | 'updateField'
   payload: FieldDetail
   name: string
 }
@@ -31,6 +31,14 @@ const FieldsReducer = (
       return {
         ...state,
         [action.name]: action.payload,
+      }
+    case 'updateField':
+      return {
+        ...state,
+        [action.name]: {
+          ...state[action.name],
+          value: action.payload.value,
+        },
       }
     default:
       return state
