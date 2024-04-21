@@ -1,4 +1,9 @@
-import { ReactNode, createContext, useEffect } from 'react'
+import {
+  ReactNode,
+  createContext,
+  forwardRef,
+  useImperativeHandle,
+} from 'react'
 import {
   FieldAction,
   useStore,
@@ -8,6 +13,11 @@ import {
 import { ValidateError } from 'async-validator'
 
 type ChildrenType = ReactNode | ((props: FormStatus) => ReactNode)
+
+export type IFormRefProps = Omit<
+  ReturnType<typeof useStore>,
+  'form' | 'fields' | 'dispatch'
+>
 
 type FormProps = {
   children: ChildrenType
@@ -36,16 +46,20 @@ export const FormContext = createContext<{
   validateAllFields: () => {},
 })
 
-export const Form = (props: FormProps) => {
+export const Form = forwardRef<IFormRefProps, FormProps>((props, ref) => {
   const { children, name, initailValues, onFinish, onFinishFailed } = props
-  const {
-    fields,
-    form,
-    dispatch,
-    validateField,
-    getFieldValue,
-    validateAllFields,
-  } = useStore()
+  const { fields, form, dispatch, ...resetProps } = useStore(initailValues)
+  const { validateField, getFieldValue, validateAllFields } = resetProps
+
+  useImperativeHandle(
+    ref,
+    () => {
+      return {
+        ...resetProps,
+      }
+    },
+    [resetProps]
+  )
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -84,4 +98,4 @@ export const Form = (props: FormProps) => {
       </form>
     </>
   )
-}
+})

@@ -71,7 +71,7 @@ const FieldsReducer = (
   }
 }
 
-export const useStore = () => {
+export const useStore = (initailValues?: Record<string, any>) => {
   const [form, setForm] = useState<FormStatus>({
     isValidate: true,
     errors: {},
@@ -80,7 +80,10 @@ export const useStore = () => {
 
   const [fields, dispatch] = useReducer(FieldsReducer, {})
 
-  const getFieldValue = (field: string) => fields[field].value
+  const getFieldValue = (field: string) => {
+    return fields[field].value
+  }
+
   const transformRules = (rules: CustomRule[]) => {
     return rules.map((rule) => {
       if (typeof rule === 'function') {
@@ -88,6 +91,30 @@ export const useStore = () => {
       }
       return rule
     })
+  }
+
+  const getFieldsValue = () => {
+    return mapValues(fields, (field) => field.value)
+  }
+
+  const setFieldValue = (name: string, value: any) => {
+    dispatch({
+      type: 'updateField',
+      payload: { name, value },
+      name,
+    })
+  }
+
+  const resetFields = () => {
+    if (initailValues) {
+      each(fields, (value, name) => {
+        if (initailValues[name] !== undefined) {
+          setFieldValue(name, initailValues[name])
+        } else {
+          setFieldValue(name, '')
+        }
+      })
+    }
   }
 
   const validateField = (name: string) => {
@@ -190,5 +217,8 @@ export const useStore = () => {
     validateField,
     getFieldValue,
     validateAllFields,
+    resetFields,
+    setFieldValue,
+    getFieldsValue,
   }
 }

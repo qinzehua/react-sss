@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { fn } from '@storybook/test'
-import { Form, FormItem } from './'
+import { Form, FormItem, IFormRefProps } from './'
 import { Input } from '../Input'
 import { Button } from '../Button'
+import { useRef } from 'react'
 
 const meta = {
   title: 'Form',
@@ -18,8 +19,16 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default = () => {
+  const ref = useRef<IFormRefProps>(null)
+
+  const resetAll = () => {
+    console.log('get username', ref.current?.getFieldValue('username'))
+    ref.current?.resetFields()
+    console.log('get username', ref.current?.getFieldValue('username'))
+  }
+
   return (
-    <Form name="form" initailValues={{ username: 'qzh' }}>
+    <Form name="form" initailValues={{ username: 'qzh' }} ref={ref}>
       {({ isSubmitting, isValidate }) => (
         <>
           <FormItem
@@ -102,6 +111,9 @@ export const Default = () => {
             <Button type="submit" btnType="primary" size="lg">
               Submit {isSubmitting ? '提交中.....' : '已提交'}{' '}
               {isValidate ? '验证成功' : '验证失败'}
+            </Button>
+            <Button type="button" btnType="danger" size="lg" onClick={resetAll}>
+              Reset
             </Button>
           </div>
         </>
