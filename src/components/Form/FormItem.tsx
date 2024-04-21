@@ -30,9 +30,18 @@ export const FormItem = (props: FormItemProps) => {
   const { dispatch, validateValue, fields, initailValues } =
     useContext(FormContext)
 
+  const errors = fields[name]?.errors ?? []
+  const hasError = errors.length > 0
+
   const rowClasses = classNames('row', {
     'form-item-no-label': !label,
   })
+
+  const controlClasses = classNames('form-item-control', {
+    'form-item-has-error': hasError,
+  })
+
+  const errorClasses = classNames('form-item-explain')
 
   useEffect(() => {
     const initialValue = initailValues?.[name] ?? ''
@@ -82,7 +91,10 @@ export const FormItem = (props: FormItemProps) => {
           <label title={label}>{label}:</label>
         </div>
       )}
-      <div className="form-item">{cloneElement}</div>
+      <div className="form-item">
+        <div className={controlClasses}>{cloneElement}</div>
+        {hasError && <div className={errorClasses}>{errors[0].message}</div>}
+      </div>
     </div>
   )
 }
