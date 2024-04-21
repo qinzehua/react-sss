@@ -23,12 +23,12 @@ export const Default = () => {
   return (
     <Form name="form" initailValues={{ username: 'qzh', agreement: true }}>
       <FormItem
+        require
         label="Username"
         name="username"
         rules={[
           {
             type: 'email',
-            required: true,
           },
         ]}
       >
@@ -44,6 +44,32 @@ export const Default = () => {
             min: 3,
             max: 8,
           },
+        ]}
+      >
+        <Input type="password" />
+      </FormItem>
+      <FormItem
+        label="Confirm Password"
+        name="confirm_password"
+        rules={[
+          {
+            type: 'string',
+            required: true,
+            min: 3,
+            max: 8,
+          },
+          ({ getFieldValue }) => ({
+            asyncValidator: async (rule, value) => {
+              console.log('value: ', value)
+              return new Promise((resolve, reject) => {
+                if (value !== getFieldValue('password')) {
+                  return reject('Password not match')
+                }
+                resolve()
+              })
+            },
+            message: 'Password not match',
+          }),
         ]}
       >
         <Input type="password" />

@@ -12,21 +12,29 @@ export const FormContext = createContext<{
   fields: FieldsStatus
   initailValues?: Record<string, any>
   validateValue: (name: string) => void
+  getFieldValue: (field: string) => any
 }>({
   dispatch: () => {},
   fields: {},
   initailValues: {},
   validateValue: () => {},
+  getFieldValue: () => {},
 })
 
 export const Form = (props: FormProps) => {
   const { children, name, initailValues } = props
-  const { fields, form, dispatch, validateValue } = useStore()
+  const { fields, form, dispatch, validateValue, getFieldValue } = useStore()
   return (
     <>
       <form className="form" name={name}>
         <FormContext.Provider
-          value={{ dispatch, validateValue, fields, initailValues }}
+          value={{
+            dispatch,
+            validateValue,
+            fields,
+            initailValues,
+            getFieldValue,
+          }}
         >
           {children}
         </FormContext.Provider>
