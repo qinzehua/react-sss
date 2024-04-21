@@ -29,7 +29,7 @@ export const FormItem = (props: FormItemProps) => {
     require,
   } = props
 
-  const { dispatch, getFieldValue, validateValue, fields, initailValues } =
+  const { dispatch, getFieldValue, validateField, fields, initailValues } =
     useContext(FormContext)
 
   const errors = fields[name]?.errors ?? []
@@ -92,7 +92,7 @@ export const FormItem = (props: FormItemProps) => {
     const originEvent = childProps[validateTrigger]
     childProps[validateTrigger] = (e: any) => {
       originEvent?.(e)
-      validateValue(name)
+      validateField(name)
     }
   }
 

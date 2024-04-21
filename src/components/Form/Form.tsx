@@ -1,4 +1,4 @@
-import { ReactNode, createContext } from 'react'
+import { ReactNode, createContext, useEffect } from 'react'
 import { FieldAction, useStore, FieldsStatus } from './hooks/useStore'
 
 type FormProps = {
@@ -11,29 +11,44 @@ export const FormContext = createContext<{
   dispatch: React.Dispatch<FieldAction>
   fields: FieldsStatus
   initailValues?: Record<string, any>
-  validateValue: (name: string) => void
+  validateField: (name: string) => void
   getFieldValue: (field: string) => any
+  validateAllFields: () => void
 }>({
   dispatch: () => {},
   fields: {},
   initailValues: {},
-  validateValue: () => {},
+  validateField: () => {},
   getFieldValue: () => {},
+  validateAllFields: () => {},
 })
 
 export const Form = (props: FormProps) => {
   const { children, name, initailValues } = props
-  const { fields, form, dispatch, validateValue, getFieldValue } = useStore()
+  const {
+    fields,
+    form,
+    dispatch,
+    validateField,
+    getFieldValue,
+    validateAllFields,
+  } = useStore()
+
+  useEffect(() => {
+    validateAllFields()
+  }, [fields, validateAllFields])
+
   return (
     <>
       <form className="form" name={name}>
         <FormContext.Provider
           value={{
             dispatch,
-            validateValue,
+            validateField,
             fields,
             initailValues,
             getFieldValue,
+            validateAllFields,
           }}
         >
           {children}

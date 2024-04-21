@@ -4,8 +4,6 @@ import { Form, FormItem } from './'
 import { Input } from '../Input'
 import { Button } from '../Button'
 
-import { useState } from 'react'
-
 const meta = {
   title: 'Form',
   component: Form,
@@ -52,12 +50,6 @@ export const Default = () => {
         label="Confirm Password"
         name="confirm_password"
         rules={[
-          {
-            type: 'string',
-            required: true,
-            min: 3,
-            max: 8,
-          },
           ({ getFieldValue }) => ({
             asyncValidator: async (rule, value) => {
               console.log('value: ', value)
