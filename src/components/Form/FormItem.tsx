@@ -2,6 +2,7 @@ import { ReactNode, useContext, useEffect } from 'react'
 import classNames from 'classnames'
 import { FormContext } from './Form'
 import React from 'react'
+import { RuleItem } from 'async-validator'
 
 type FormItemProps = {
   name: string
@@ -10,6 +11,8 @@ type FormItemProps = {
   valuePropsName?: string
   trigger?: string
   getValueFromEvent?: (e: any) => any
+  rules?: RuleItem[]
+  validateTrigger?: string
 }
 
 export const FormItem = (props: FormItemProps) => {
@@ -20,22 +23,26 @@ export const FormItem = (props: FormItemProps) => {
     valuePropsName = 'value',
     trigger = 'onChange',
     getValueFromEvent,
+    rules,
+    validateTrigger = 'onBlur',
   } = props
 
-  const { dispatch, fields } = useContext(FormContext)
+  const { dispatch, validateValue, fields, initailValues } =
+    useContext(FormContext)
 
   const rowClasses = classNames('row', {
     'form-item-no-label': !label,
   })
 
   useEffect(() => {
+    const initialValue = initailValues?.[name] ?? ''
     dispatch({
       type: 'addField',
       payload: {
         name,
-        label,
-        value: '',
-        rules: [],
+        value: initialValue,
+        rules: rules,
+        errors: [],
         isValidate: true,
       },
       name,
@@ -45,7 +52,6 @@ export const FormItem = (props: FormItemProps) => {
   const value = fields?.[name]?.value
   const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = getValueFromEvent ? getValueFromEvent(e) : e.target.value
-    console.log('value: ', value)
 
     dispatch({
       type: 'updateField',
@@ -55,11 +61,19 @@ export const FormItem = (props: FormItemProps) => {
   }
 
   const child = React.Children.toArray(children)[0] as React.ReactElement
-  const cloneElement = React.cloneElement(child, {
-    ...child.props,
-    [valuePropsName]: value,
-    [trigger]: handleValueChange,
-  })
+  const childProps = { ...child.props }
+  childProps[trigger] = handleValueChange
+  childProps[valuePropsName] = value
+
+  if (rules) {
+    const originEvent = childProps[validateTrigger]
+    childProps[validateTrigger] = (e: any) => {
+      originEvent?.(e)
+      validateValue(name)
+    }
+  }
+
+  const cloneElement = React.cloneElement(child, childProps)
 
   return (
     <div className={rowClasses}>

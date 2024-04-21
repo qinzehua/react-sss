@@ -21,16 +21,41 @@ type Story = StoryObj<typeof meta>
 
 export const Default = () => {
   return (
-    <Form name="form">
-      <FormItem label="Username" name="username">
+    <Form name="form" initailValues={{ username: 'qzh', agreement: true }}>
+      <FormItem
+        label="Username"
+        name="username"
+        rules={[
+          {
+            type: 'email',
+            required: true,
+          },
+        ]}
+      >
         <Input type="text" />
       </FormItem>
-      <FormItem label="Password" name="password">
+      <FormItem
+        label="Password"
+        name="password"
+        rules={[
+          {
+            type: 'string',
+            required: true,
+            min: 3,
+            max: 8,
+          },
+        ]}
+      >
         <Input type="password" />
       </FormItem>
       <div
         className="agreement-section"
-        style={{ display: 'flex', justifyContent: 'flex-end' }}
+        style={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'bottom',
+          gap: '8px',
+        }}
       >
         <FormItem
           name="agreement"
