@@ -128,25 +128,22 @@ export const useStore = () => {
       isSubmitting: true,
     })
 
-    const descriptor = mapValues(fields, (field) => field.value)
+    const valueMap = mapValues(fields, (field) => field.value)
 
-    const rules = mapValues(fields, (field) => {
-      if (field.rules?.length) {
-        return transformRules(field.rules)
-      } else {
-        return undefined
-      }
-    })
+    const descriptor = mapValues(fields, (field) =>
+      transformRules(field.rules!)
+    )
 
     let isValidate = true
     let errors: Record<string, ValidateError[]> = {}
     const validator = new Schema(descriptor)
 
     try {
-      await validator.validate(descriptor, rules)
+      await validator.validate(valueMap)
     } catch (error) {
       isValidate = false
       errors = (error as ValidateErrorObj).fields
+      console.log('errors: ', errors)
       each(fields, (value, name) => {
         if (errors[name]) {
           dispatch({
@@ -177,6 +174,12 @@ export const useStore = () => {
         errors,
         isSubmitting: false,
       })
+
+      return {
+        isValidate,
+        errors,
+        values: valueMap,
+      }
     }
   }
 

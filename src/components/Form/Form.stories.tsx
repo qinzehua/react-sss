@@ -19,7 +19,7 @@ type Story = StoryObj<typeof meta>
 
 export const Default = () => {
   return (
-    <Form name="form" initailValues={{ username: 'qzh', agreement: true }}>
+    <Form name="form" initailValues={{ username: 'qzh' }}>
       <FormItem
         require
         label="Username"
@@ -79,6 +79,12 @@ export const Default = () => {
           name="agreement"
           valuePropsName="checked"
           getValueFromEvent={(e) => e.target.checked}
+          rules={[
+            {
+              type: 'enum',
+              enum: [true],
+            },
+          ]}
         >
           <Input type="checkbox" />
         </FormItem>
@@ -87,7 +93,7 @@ export const Default = () => {
         </span>
       </div>
       <div className="form-submit-area">
-        <Button btnType="primary" size="lg">
+        <Button type="submit" btnType="primary" size="lg">
           Submit
         </Button>
       </div>

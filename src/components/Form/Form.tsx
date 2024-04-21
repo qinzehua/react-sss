@@ -1,10 +1,16 @@
 import { ReactNode, createContext, useEffect } from 'react'
 import { FieldAction, useStore, FieldsStatus } from './hooks/useStore'
+import { ValidateError } from 'async-validator'
 
 type FormProps = {
   children: ReactNode
   name: string
   initailValues?: Record<string, any>
+  onFinish?: (values: Record<string, any>) => void
+  onFinishFailed?: (
+    values: Record<string, any>,
+    error: Record<string, ValidateError[]>
+  ) => void
 }
 
 export const FormContext = createContext<{
@@ -24,7 +30,7 @@ export const FormContext = createContext<{
 })
 
 export const Form = (props: FormProps) => {
-  const { children, name, initailValues } = props
+  const { children, name, initailValues, onFinish, onFinishFailed } = props
   const {
     fields,
     form,
@@ -33,14 +39,22 @@ export const Form = (props: FormProps) => {
     getFieldValue,
     validateAllFields,
   } = useStore()
+  console.log('form.isValidate) : ', form.isValidate)
 
-  useEffect(() => {
-    validateAllFields()
-  }, [fields, validateAllFields])
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    const { isValidate, values, errors } = await validateAllFields()
+    if (isValidate) {
+      onFinish?.(values)
+    } else {
+      onFinishFailed?.(values, errors)
+    }
+  }
 
   return (
     <>
-      <form className="form" name={name}>
+      <form className="form" name={name} onSubmit={handleSubmit}>
         <FormContext.Provider
           value={{
             dispatch,
@@ -54,10 +68,6 @@ export const Form = (props: FormProps) => {
           {children}
         </FormContext.Provider>
       </form>
-      <div>
-        <pre>{JSON.stringify(fields, null, 2)}</pre>
-        <pre>{JSON.stringify(form, null, 2)}</pre>
-      </div>
     </>
   )
 }
