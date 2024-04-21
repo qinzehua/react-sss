@@ -20,83 +20,92 @@ type Story = StoryObj<typeof meta>
 export const Default = () => {
   return (
     <Form name="form" initailValues={{ username: 'qzh' }}>
-      <FormItem
-        require
-        label="Username"
-        name="username"
-        rules={[
-          {
-            type: 'email',
-          },
-        ]}
-      >
-        <Input type="text" />
-      </FormItem>
-      <FormItem
-        label="Password"
-        name="password"
-        rules={[
-          {
-            type: 'string',
-            required: true,
-            min: 3,
-            max: 8,
-          },
-        ]}
-      >
-        <Input type="password" />
-      </FormItem>
-      <FormItem
-        label="Confirm Password"
-        name="confirm_password"
-        rules={[
-          ({ getFieldValue }) => ({
-            asyncValidator: async (rule, value) => {
-              console.log('value: ', value)
-              return new Promise((resolve, reject) => {
-                if (value !== getFieldValue('password')) {
-                  return reject('Password not match')
-                }
-                resolve()
-              })
-            },
-            message: 'Password not match',
-          }),
-        ]}
-      >
-        <Input type="password" />
-      </FormItem>
-      <div
-        className="agreement-section"
-        style={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-          alignItems: 'bottom',
-          gap: '8px',
-        }}
-      >
-        <FormItem
-          name="agreement"
-          valuePropsName="checked"
-          getValueFromEvent={(e) => e.target.checked}
-          rules={[
-            {
-              type: 'enum',
-              enum: [true],
-            },
-          ]}
-        >
-          <Input type="checkbox" />
-        </FormItem>
-        <span className="agreement-text">
-          I agree to the <a href="#">terms and conditions</a>
-        </span>
-      </div>
-      <div className="form-submit-area">
-        <Button type="submit" btnType="primary" size="lg">
-          Submit
-        </Button>
-      </div>
+      {({ isSubmitting, isValidate }) => (
+        <>
+          <FormItem
+            require
+            label="Username"
+            name="username"
+            rules={[
+              {
+                type: 'email',
+              },
+            ]}
+          >
+            <Input type="text" />
+          </FormItem>
+          <FormItem
+            label="Password"
+            name="password"
+            rules={[
+              {
+                type: 'string',
+                required: true,
+                min: 3,
+                max: 8,
+              },
+            ]}
+          >
+            <Input type="password" />
+          </FormItem>
+          <FormItem
+            label="Confirm Password"
+            name="confirm_password"
+            rules={[
+              ({ getFieldValue }) => ({
+                asyncValidator: async (rule, value) => {
+                  return new Promise((resolve, reject) => {
+                    if (value !== getFieldValue('password')) {
+                      setTimeout(() => {
+                        reject('Password not match')
+                      }, 1000)
+                    } else {
+                      setTimeout(() => {
+                        resolve()
+                      }, 1000)
+                    }
+                  })
+                },
+                message: 'Password not match',
+              }),
+            ]}
+          >
+            <Input type="password" />
+          </FormItem>
+          <div
+            className="agreement-section"
+            style={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+              alignItems: 'bottom',
+              gap: '8px',
+            }}
+          >
+            <FormItem
+              name="agreement"
+              valuePropsName="checked"
+              getValueFromEvent={(e) => e.target.checked}
+              rules={[
+                {
+                  type: 'enum',
+                  enum: [true],
+                },
+              ]}
+            >
+              <Input type="checkbox" />
+            </FormItem>
+            <span className="agreement-text">
+              I agree to the <a href="#">terms and conditions</a>
+            </span>
+          </div>
+          <div className="form-submit-area">
+            <Button type="submit" btnType="primary" size="lg">
+              Submit {isSubmitting ? '提交中.....' : '已提交'}{' '}
+              {isValidate ? '验证成功' : '验证失败'}
+            </Button>
+          </div>
+        </>
+      )}
     </Form>
   )
 }

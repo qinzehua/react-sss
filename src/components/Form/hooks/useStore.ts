@@ -27,7 +27,7 @@ interface ValidateErrorObj extends Error {
   fields: Record<string, ValidateError[]>
 }
 
-type FormStatus = {
+export type FormStatus = {
   isValidate: boolean
   errors: Record<string, ValidateError[]>
   isSubmitting: boolean

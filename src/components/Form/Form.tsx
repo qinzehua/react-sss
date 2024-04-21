@@ -1,9 +1,16 @@
 import { ReactNode, createContext, useEffect } from 'react'
-import { FieldAction, useStore, FieldsStatus } from './hooks/useStore'
+import {
+  FieldAction,
+  useStore,
+  FieldsStatus,
+  FormStatus,
+} from './hooks/useStore'
 import { ValidateError } from 'async-validator'
 
+type ChildrenType = ReactNode | ((props: FormStatus) => ReactNode)
+
 type FormProps = {
-  children: ReactNode
+  children: ChildrenType
   name: string
   initailValues?: Record<string, any>
   onFinish?: (values: Record<string, any>) => void
@@ -39,7 +46,6 @@ export const Form = (props: FormProps) => {
     getFieldValue,
     validateAllFields,
   } = useStore()
-  console.log('form.isValidate) : ', form.isValidate)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -50,6 +56,14 @@ export const Form = (props: FormProps) => {
     } else {
       onFinishFailed?.(values, errors)
     }
+  }
+
+  let childElement: ReactNode
+
+  if (typeof children === 'function') {
+    childElement = children(form)
+  } else {
+    childElement = children
   }
 
   return (
@@ -65,7 +79,7 @@ export const Form = (props: FormProps) => {
             validateAllFields,
           }}
         >
-          {children}
+          {childElement}
         </FormContext.Provider>
       </form>
     </>
