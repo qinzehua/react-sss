@@ -1,14 +1,11 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
 import './styles/index.scss'
-import { Button, ButtonSize, ButtonType } from './components/Button/Button'
-import { Menu, MenuItem, SubMenu } from './components/Menu'
-import { Icon } from './components/Icon'
-import { App } from './App'
-
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-)
+export { Alert } from './components/Alert'
+export { AutoComplete } from './components/AutoComplete'
+export { Button } from './components/Button/'
+export { Form } from './components/Form'
+export { Icon } from './components/Icon'
+export { Input } from './components/Input'
+export { Menu, SubMenu, MenuItem } from './components/Menu'
+export { Progress } from './components/Progress'
+export { Transition } from './components/Transition'
+export { Upload } from './components/Upload'
