@@ -1,6 +1,6 @@
 {
   "name": "qzh_react_library",
-  "version": "1.2.0",
+  "version": "1.6.0",
   "private": false,
   "author": "qzh",
   "license": "MIT",
@@ -11,7 +11,8 @@
   ],
   "description": "A React component library",
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -26,7 +27,7 @@
     "eject": "react-scripts eject",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook dist",
-    "prepublish": "npm run build_library"
+    "prepublishOnly": "npm run build_library"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
@@ -73,8 +74,8 @@
     "storybook": "^8.0.5",
     "typescript": "^4.9.5",
     "webpack": "^5.91.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
   },
   "eslintConfig": {
     "extends": [
