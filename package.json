@@ -1,10 +1,21 @@
 {
   "name": "04",
   "version": "0.1.0",
-  "private": true,
-  "main": "build/index.js",
-  "module": "build/index.js",
-  "types": "build/index.d.ts",
+  "private": false,
+  "author": "qzh",
+  "license": "MIT",
+  "keywords": [
+    "Component",
+    "UI",
+    "React"
+  ],
+  "description": "A React component library",
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
@@ -20,15 +31,15 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
-    "clean": "rimraf ./build",
+    "clean": "rimraf ./dist",
     "build_library": "npm run clean && npm run build-ts && npm run build-css",
     "build-ts": "tsc -p tsconfig.build.json",
-    "build-css": "dart-sass ./src/styles/index.scss ./build/styles/index.css",
+    "build-css": "dart-sass ./src/styles/index.scss ./dist/styles/index.css",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook dist",
+    "prepublish": "npm run build_library"
   },
   "eslintConfig": {
     "extends": [
