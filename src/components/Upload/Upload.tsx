@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { Button } from '../Button'
 import { useRef, useState } from 'react'
 import { UploadList } from './UploadList'
 import { Dragger } from './Dragger'

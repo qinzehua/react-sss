@@ -1,5 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
-import { fn } from '@storybook/test'
+import type { Meta } from '@storybook/react'
 import { FileUpload, Upload } from './Upload'
 import { Icon } from '../Icon'
 
@@ -13,16 +12,6 @@ const meta = {
 } satisfies Meta<typeof Upload>
 
 export default meta
-
-type Story = StoryObj<typeof meta>
-
-const checkFileSize = async (file: File) => {
-  if (Math.round(file.size / 1024) > 50) {
-    alert('file too big')
-    return false
-  }
-  return true
-}
 
 const modifyFile = async (file: File) => {
   const newFile = new File([file], 'new_name', { type: file.type })

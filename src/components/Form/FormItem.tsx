@@ -70,6 +70,7 @@ export const FormItem = (props: FormItemProps) => {
       },
       name,
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const value = fields?.[name]?.value

@@ -9,18 +9,6 @@ const defaultProps = {
   placeholder: 'input',
 }
 
-const testProps = {
-  size: 'medium',
-  icon: 'search',
-  prepand: 'https://',
-  append: '.com',
-}
-
-const disabledProps = {
-  disabled: true,
-  onChange: jest.fn(),
-}
-
 describe('Input', () => {
   it('should render the correct default input', async () => {
     render(<Input {...defaultProps} />)

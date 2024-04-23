@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
 import { Input, InputProps } from '../Input'
 import { Icon } from '../Icon'

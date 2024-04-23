@@ -39,7 +39,7 @@ export const SizeInput = () => (
   </div>
 )
 
-export const pandInput = () => (
+export const PandInput = () => (
   <div>
     <Input defaultValue="prepend text" prepend="https://" />
     <Input defaultValue="google" append=".com" />

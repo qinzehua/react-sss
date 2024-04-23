@@ -1,9 +1,4 @@
-import React, {
-  ChangeEvent,
-  InputHTMLAttributes,
-  forwardRef,
-  useRef,
-} from 'react'
+import React, { ChangeEvent, InputHTMLAttributes, forwardRef } from 'react'
 import { IconProp } from '@fortawesome/fontawesome-svg-core'
 import classNames from 'classnames'
 import { Icon } from '../Icon'

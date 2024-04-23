@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react'
+import { useReducer, useState } from 'react'
 import Schema, { RuleItem, ValidateError } from 'async-validator'
 import { mapValues, each } from 'lodash-es'
 

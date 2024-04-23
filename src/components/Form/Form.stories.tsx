@@ -1,5 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
-import { fn } from '@storybook/test'
+import type { Meta } from '@storybook/react'
 import { Form, FormItem, IFormRefProps } from './'
 import { Input } from '../Input'
 import { Button } from '../Button'
@@ -15,8 +14,6 @@ const meta = {
 } satisfies Meta<typeof Form>
 
 export default meta
-
-type Story = StoryObj<typeof meta>
 
 export const Default = () => {
   const ref = useRef<IFormRefProps>(null)
@@ -104,7 +101,7 @@ export const Default = () => {
               <Input type="checkbox" />
             </FormItem>
             <span className="agreement-text">
-              I agree to the <a href="#">terms and conditions</a>
+              I agree to the <a href="https://baidu.com">terms and conditions</a>
             </span>
           </div>
           <div className="form-submit-area">
