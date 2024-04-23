@@ -1,4 +1,3 @@
-import './styles/index.scss'
 export { Alert } from './components/Alert'
 export { AutoComplete } from './components/AutoComplete'
 export { Button } from './components/Button/'
