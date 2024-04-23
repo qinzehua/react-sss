@@ -29,7 +29,8 @@
     "eject": "react-scripts eject",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook dist",
-    "prepublishOnly": "npm run lint && npm run test:noWatch && npm run build_library"
+    "prepublishOnly": "npm run lint && npm run test:noWatch && npm run build_library",
+    "prepare": "husky"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
@@ -86,11 +87,6 @@
       "react-app/jest",
       "plugin:storybook/recommended"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint && npm run test:noWatch"
-    }
   },
   "browserslist": {
     "production": [
