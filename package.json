@@ -1,6 +1,6 @@
 {
   "name": "qzh_react_library",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "private": false,
   "author": "qzh",
   "license": "MIT",
@@ -24,12 +24,12 @@
     "build-ts": "tsc -p tsconfig.build.json",
     "build-css": "dart-sass ./src/styles/index.scss ./dist/styles/index.css",
     "test": "react-scripts test",
-    "test:noWatch": "cross-env CI=true react-scripts test",
+    "test:noWatch": "react-scripts test --watchAll=false",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src",
     "eject": "react-scripts eject",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook dist",
-    "prepublishOnly": "npm run build_library"
+    "prepublishOnly": "npm run lint && npm run test:noWatch && npm run build_library"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
@@ -67,9 +67,9 @@
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
     "@types/react-transition-group": "^4.4.10",
-    "cross-env": "^7.0.3",
     "dart-sass": "^1.25.0",
     "eslint-plugin-storybook": "^0.8.0",
+    "husky": "^9.0.11",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -86,6 +86,11 @@
       "react-app/jest",
       "plugin:storybook/recommended"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && npm run test:noWatch"
+    }
   },
   "browserslist": {
     "production": [
